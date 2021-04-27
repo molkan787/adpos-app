@@ -1,0 +1,38 @@
+{
+  "name": "eu.drmstudio.adpos",
+  "version": "1.3.2",
+  "description": "AVANTI DEALER POINT OF SALE - Created by Seghier Dahmane @ dahmane.pl",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dist": "build",
+    "start": "./node_modules/.bin/electron .",
+    "rebuild": "./node_modules/.bin/electron-rebuild .",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "author": "Seghier Dahmane @ dahmane.pl",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "6.1.12",
+    "electron-builder": "^20.44.4",
+    "electron-rebuild": "^2.3.4"
+  },
+  "dependencies": {
+    "excel4node": "^1.7.2",
+    "exceljs": "^3.4.0",
+    "fs-jetpack": "^2.2.3",
+    "gmail-send": "^1.8.10",
+    "sqlite3": "4.2.0",
+    "sqlite3orm": "^2.4.14"
+  },
+  "build": {
+    "appId": "eu.drmstudio.adpos",
+    "productName": "ADPOS",
+    "win": {
+      "target": "nsis"
+    },
+    "electronDownload": {
+      "version": "6.1.12"
+    }
+  }
+}

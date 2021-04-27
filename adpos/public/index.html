@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <title>AVANTI DEALER POINT OF SALE (ADPOS) CREATED BY JIMMY GEORGIADIS</title>
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
+    <link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
+    <script>
+      const electron = require('electron');
+      const remote = require('electron').remote;
+      window.req = name => name == 'electron' ? electron : remote.require(name);
+      window.remote = remote;
+      const DEV = remote.getGlobal('DEV');
+      const appVersion = remote.getGlobal('version') || 'dev';
+      document.title += ' [' + appVersion + ']';
+      window.onkeypress = function(e) {
+        if (e.keyCode == 13) {
+          event.preventDefault();
+          const currentNode = event.target;
+          if(currentNode.nextInput){
+            currentNode.nextInput.focus();
+          }else{
+            const allElements = document.querySelectorAll('input');
+            const currentIndex = [...allElements].findIndex(el => currentNode.isEqualNode(el));
+            const el = allElements[currentIndex + 1];
+            if(el) el.focus();
+          }
+        }else if(e.keyCode == 9){
+          const currentWindow = require('electron').remote.getCurrentWindow()
+          currentWindow.openDevTools()
+        }
+      }
+      
+      window.quit = function (){
+          if(typeof window.beforeQuit == 'function')  window.beforeQuit();
+          window.onbeforeunload = null;
+          require('electron').remote.app.quit();
+      }
+      window.hide = function (){
+          window.onbeforeunload = null;
+          window.VueApp.$destroy();
+          const { ipcRenderer } = require('electron')
+          ipcRenderer.send('hide-window', '-')
+          // require('electron').remote.app.quit();
+      }
+      if(!DEV){
+        window.onbeforeunload = async function (event) {
+          const message = 'Are you sure you want quit the app?';
+          const resp = await confirm(message);
+          if(resp){ window.hide(); }
+          return message;
+        };
+      }
+    </script>
+  </head>
+  <body>
+    <noscript>
+      <strong>Error. NO_JS</strong>
+    </noscript>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+  </body>
+</html>
