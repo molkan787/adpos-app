@@ -55,6 +55,12 @@ class DataManager{
             version == 3;
             console.log('Updated Database to version 3');
         }
+        if(version < 4){
+            await this.db.query("ALTER TABLE invoice_items ADD COLUMN date_added TEXT DEFAULT NULL");
+            await this.db.query('PRAGMA user_version = 4');
+            version == 4;
+            console.log('Updated Database to version 4');
+        }
     }
 
     static close(){

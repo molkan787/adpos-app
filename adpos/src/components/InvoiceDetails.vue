@@ -63,8 +63,8 @@ export default {
         async show(data){
             this.data = data;
             this.open = true;
-            this.services = await DataAgent.getInvoiceItems(data.no);
-            this.comment = await DataAgent.getInvoiceComment(data.no);
+            this.services = await DataAgent.getInvoiceItems(data.no, data.id);
+            this.comment = await DataAgent.getInvoiceComment(data.no, data.id);
             console.log(this.data)
         },
         printClick(){

@@ -87,7 +87,8 @@ export default class DataAgent{
             const item = {
                 ...s,
                 invoice_id: invID,
-                item_no: itemNoPrefix + (i + 1)
+                item_no: itemNoPrefix + (i + 1),
+                date_added: data.date
             };
             items.push(item);
             const gst = s.price * this.state.setting.gstRate;
@@ -180,13 +181,27 @@ export default class DataAgent{
         }
     }
 
-    static getInvoiceItems(invoice_no){
-        return DataManager.db.select('invoice_items', { item_no: { op: 'LIKE', val: `${invoice_no}-%` } });
+    static async getInvoiceItems(invoice_no, invoice_id){
+        const items = await DataManager.db.select('invoice_items', { item_no: { op: 'LIKE', val: `${invoice_no}-%` } });
+        const withId = items.filter(item => !!item.invoice_id);
+        const withoutId = items.filter(item => !item.invoice_id);
+        if(withId.length && withId[0].invoice_id == invoice_id){
+            return withId;
+        }else{
+            return withoutId;
+        }
     }
 
-    static async getInvoiceComment(invoice_no){
-        const item = await DataManager.db.findOne('sale', {invoice_no});
-        return item ? item.comment : '';
+    static async getInvoiceComment(invoice_no, invoice_id){
+        const items = await DataManager.db.select('sale', {invoice_no});
+        const withId = items.filter(item => !!item.invoice_id);
+        const withoutId = items.filter(item => !item.invoice_id);
+        if(withId.length && withId[0].invoice_id == invoice_id){
+            return withId[0].comment;
+        }else if(withoutId.length){
+            return withoutId[0].comment;
+        }
+        return '';
     }
 
     static async login(username, password){
