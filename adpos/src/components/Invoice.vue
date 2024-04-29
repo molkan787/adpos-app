@@ -7,7 +7,7 @@
                         AVANTI AUTOSPA<br>
                         3540 BOUL. DES SOURCES<br>
                         DDO, QC H9B 1Z9<br>
-                        GST # 762219293  QST # 1223960291
+                        GST # 748889151  QST # 1231512591
                     </td>
                     <td style="float: right">
                         <table style="white-space: nowrap">
